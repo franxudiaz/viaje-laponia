@@ -163,15 +163,28 @@ body {
 
 .map-btn {
     display: inline-block;
-    background: #2980b9;
-    color: white;
+    background: #ffca28;
+    /* Dorado más llamativo */
+    color: #a63d40;
+    /* Rojo contraste */
     text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    margin-top: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s;
+    padding: 12px 25px;
+    /* Más grande */
+    border-radius: 25px;
+    font-size: 1.1rem;
+    /* Texto más grande */
+    font-weight: bold;
+    margin-top: 15px;
+    border: 2px solid #a63d40;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.map-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    background: #ffd54f;
 }
 
 .map-btn:active {

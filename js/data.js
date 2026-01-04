@@ -14,7 +14,7 @@ const itinerary = [
       name: 'Winter Arctic Apartment',
       url: 'https://www.google.com/maps/search/?api=1&query=Korkalonkatu+34-36,+96200+Rovaniemi'
     },
-    locationImage: 'assets/ounasvaara.png' // Generic winter view for arrival
+    locationImage: 'assets/ounasvaara.png' // Arrival view (original nice view)
   },
   {
     id: 2,
@@ -23,13 +23,13 @@ const itinerary = [
     title: 'Magia en Santa Park',
     icon: 'assets/santa_custom.png',
     activities: [
-      { time: 'Todo el día', desc: 'Santa Park (Talleres de galletas, Elfos, etc.)' }
+      { time: 'Todo el día', desc: 'Santa Park (Talleres, Elfos, Tren mágico...)' }
     ],
     location: {
       name: 'Santa Park',
       url: 'https://www.google.com/maps/search/?api=1&query=Santa+Park+Rovaniemi'
     },
-    locationImage: 'assets/santa_park.png'
+    locationImage: 'assets/photo_santa_park.png' // NEW IMAGE
   },
   {
     id: 3,
@@ -38,14 +38,14 @@ const itinerary = [
     title: 'Naturaleza y Cultura',
     icon: 'assets/reindeer_custom.png',
     activities: [
-      { time: 'Mañana', desc: 'Excursión Ounasvaara' },
-      { time: 'Tarde', desc: 'Museo Arktikum' }
+      { time: 'Mañana', desc: 'Excursión Ounasvaara (Vistas Panorámicas de ensueño)' },
+      { time: 'Tarde', desc: 'Museo Arktikum (Túnel de cristal y ciencia ártica)' }
     ],
     location: {
       name: 'Arktikum',
       url: 'https://www.google.com/maps/search/?api=1&query=Arktikum+Rovaniemi'
     },
-    locationImage: 'assets/arktikum.png'
+    locationImage: 'assets/photo_arktikum.png' // NEW IMAGE
   },
   {
     id: 4,
@@ -54,44 +54,45 @@ const itinerary = [
     title: 'Huskies y Santa Village',
     icon: 'assets/husky_custom.png',
     activities: [
-      { time: 'Mañana', desc: 'Safari con Huskies (2h)' },
+      { time: 'Mañana', desc: 'Safari con Huskies (2h) - ¡A correr por el bosque!' },
       { time: 'Resto del día', desc: 'Santa Claus Village' }
     ],
     location: {
       name: 'Santa Claus Village',
       url: 'https://www.google.com/maps/search/?api=1&query=Santa+Claus+Village+Rovaniemi'
     },
-    locationImage: 'assets/huskies.png'
+    locationImage: 'assets/photo_huskies.png' // NEW IMAGE
   },
   {
     id: 5,
     date: '2026-01-11',
     dayInfo: 'Domingo 11 Enero',
-    title: 'Santa Claus Village',
+    title: 'Visita Oficial a Santa',
     icon: 'assets/santa_custom.png',
     activities: [
-      { time: 'Todo el día', desc: 'Disfrutar de Santa Claus Village' }
+      { time: 'Todo el día', desc: 'Conocer a Santa Claus en su Oficina Principal' },
+      { time: 'Tarde', desc: 'Paseo por el Círculo Polar Ártico' }
     ],
     location: {
       name: 'Santa Claus Village',
-      url: 'https://www.google.com/maps/search/?api=1&query=Santa+Claus+Village+Rovaniemi'
+      url: 'https://www.google.com/maps/search/?api=1&query=Santa+Claus+Office+Rovaniemi'
     },
-    locationImage: 'assets/santa_village.png'
+    locationImage: 'assets/photo_santa_village.png' // NEW IMAGE
   },
   {
     id: 6,
     date: '2026-01-12',
     dayInfo: 'Lunes 12 Enero',
-    title: 'Compras y Visitas',
+    title: 'Compras y Recuerdos',
     icon: 'assets/santa_custom.png',
     activities: [
-      { time: 'Todo el día', desc: 'Santa Claus Village (Compras y Visitas)' }
+      { time: 'Todo el día', desc: 'Santa Claus Village (Tiendas de souvenirs y últimos adioses)' }
     ],
     location: {
       name: 'Santa Claus Village',
       url: 'https://www.google.com/maps/search/?api=1&query=Santa+Claus+Village+Rovaniemi'
     },
-    locationImage: 'assets/santa_village.png'
+    locationImage: 'assets/photo_santa_village.png' // Reuse beautiful village photo
   },
   {
     id: 7,
@@ -100,7 +101,7 @@ const itinerary = [
     title: 'Vuelta a Casa',
     icon: 'assets/reindeer_custom.png',
     activities: [
-      { time: 'TBD', desc: 'Traslado al aeropuerto' },
+      { time: 'TBD', desc: 'Traslado al aeropuerto con la maleta llena de magia' },
       { time: 'TBD', desc: 'Vuelo de vuelta a España' }
     ],
     location: {
