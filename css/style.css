@@ -226,15 +226,57 @@ body {
 /* Mobile First implies styles are for mobile, but PageFlip needs specific dimensions often. 
    We will rely on JS to set dimensions, but CSS handles inner layout. */
 @media (max-width: 600px) {
-    .page-content {
+    .book-container {
+        /* En móvil, ajustamos la perspectiva para que se vea plano y grande */
+        perspective: none;
         padding: 10px;
     }
 
+    .page {
+        padding: 10px;
+        /* Menos borde blanco */
+        border: 1px solid #ccc;
+    }
+
+    .page-content {
+        padding: 10px;
+        border: 1px dashed #d4c5a5;
+    }
+
     .day-title {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+        /* Ajustar título */
+    }
+
+    .day-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 5px;
     }
 
     .location-image-container {
-        height: 150px;
+        height: 140px;
+        /* Imagen un poco más baja para que quepa todo */
+        margin: 5px 0;
+    }
+
+    .activities-list {
+        font-size: 0.85rem;
+        /* Texto un pelín más pequeño */
+    }
+
+    .activities-list li {
+        margin-bottom: 5px;
+    }
+
+    .map-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+
+    /* Cover adjustments */
+    .cover h1 {
+        font-size: 2.2rem;
     }
 }

@@ -68,23 +68,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Initialize PageFlip
     // We wait a tiny bit to ensure DOM is fully parsed
     setTimeout(() => {
+        const isMobile = window.innerWidth < 768;
+
         const pageFlip = new St.PageFlip(document.getElementById('book'), {
-            width: 350, // Base width
-            height: 600, // Base height
-            size: 'stretch',
+            width: isMobile ? 400 : 500, // En móvil, usamos un ancho base que llene más
+            height: isMobile ? 600 : 700,
+            size: isMobile ? 'stretch' : 'fixed', // Stretch en móvil para llenar pantalla
+            // Configuración clave para móvil:
             minWidth: 300,
-            maxWidth: 500,
-            minHeight: 500,
-            maxHeight: 800,
+            maxWidth: 1000,
+            minHeight: 400,
+            maxHeight: 1200,
             maxShadowOpacity: 0.5,
             showCover: true,
-            mobileScrollSupport: false // Disable scroll on mobile to avoid conflicts
+            mobileScrollSupport: false,
+            usePortrait: true, // Permitir modo retrato (una sola página)
+            startPage: 0
         });
+
+        // Trigger resize manually just in case
+        if (isMobile) {
+            // Force single page view style if needed by specific library quirks, 
+            // but usually dimensions trigger it.
+        }
 
         // Load pages
         pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-        // Expose to window for the "Start" button to work
+        // Expose to window
         document.getElementById('book').pageFlip = pageFlip;
 
     }, 100);
