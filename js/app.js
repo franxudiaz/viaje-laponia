@@ -1,136 +1,91 @@
-// import { itinerary } from './data.js'; // Removed for local execution
+document.addEventListener('DOMContentLoaded', () => {
+    const bookContainer = document.getElementById('book');
 
-const timelineContainer = document.getElementById('timeline');
+    // 1. Generate Pages HTML
+    let pagesHTML = '';
 
-// Snowfall effect generator
-function createSnowflakes() {
-    const symbols = ['❄', '❅', '❆', '•'];
-    const count = 20; // Number of snowflakes
-
-    for (let i = 0; i < count; i++) {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-
-        // Randomize position and animation delay
-        snowflake.style.left = (Math.random() * 100) + 'vw';
-        snowflake.style.animationDuration = (Math.random() * 5 + 5) + 's, ' + (Math.random() * 3 + 2) + 's';
-        snowflake.style.animationDelay = (Math.random() * 5) + 's, ' + (Math.random() * 2) + 's';
-        snowflake.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
-        snowflake.style.opacity = Math.random() * 0.7 + 0.3;
-
-        document.body.appendChild(snowflake);
-    }
-}
-
-function renderTimeline() {
-    timelineContainer.innerHTML = '';
-
-
-    itinerary.forEach((day, index) => {
-        const card = document.createElement('article');
-        card.className = 'day-card';
-        card.style.animationDelay = `${index * 0.1}s`; // Stagger animation
-        card.style.animation = `fadeInDown 0.5s ease-out forwards`;
-        card.style.opacity = '0'; // Initial state for animation
-        // Fix for animation visibility
-        setTimeout(() => card.style.opacity = '1', index * 100);
-
-        // Build Activities HTML
-        const activitiesHtml = day.activities.map(act => `
-            <li class="activity-item">
-                <span class="time">${act.time}</span>
-                <span class="desc">${act.desc}</span>
-            </li>
-        `).join('');
-
-        card.innerHTML = `
-            <div class="card-header">
-                <span class="date">${day.dayInfo}</span>
-                <img src="${day.icon}" alt="Icon" class="icon">
+    // -- Cover Page --
+    pagesHTML += `
+        <div class="page cover">
+            <div class="page-content">
+                <h1>Viaje a<br>Laponia</h1>
+                <img src="assets/santa_custom.png" alt="Santa" style="width: 100px; margin: 20px 0;">
+                <h2>Enero 2026</h2>
+                <button class="start-btn" onclick="document.getElementById('book').pageFlip.flipNext()">¡Empezar Aventura!</button>
             </div>
-            <h2 class="card-title">${day.title}</h2>
-            <ul class="activities">
-                ${activitiesHtml}
-            </ul>
-            <a href="${day.location.url}" target="_blank" class="map-btn" onclick="event.stopPropagation();">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                </svg>
-                Ver en Mapa
-            </a>
-        `;
-
-        // Add click event to open modal
-        card.addEventListener('click', () => openModal(day));
-
-        timelineContainer.appendChild(card);
-    });
-}
-
-function openModal(day) {
-    // Create modal if it doesn't exist
-    let modal = document.getElementById('day-modal');
-    if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'day-modal';
-        modal.className = 'modal-overlay';
-        document.body.appendChild(modal);
-    }
-
-    const activitiesHtml = day.activities.map(act => `
-        <li class="activity-item">
-            <span class="time">${act.time}</span>
-            <span class="desc">${act.desc}</span>
-        </li>
-    `).join('');
-
-    modal.innerHTML = `
-        <div class="expanded-card">
-            <button class="close-btn" onclick="closeModal()">×</button>
-            <img src="${day.locationImage}" alt="${day.title}" class="location-image">
-            <div class="expanded-content">
-                <div class="card-header">
-                    <span class="date">${day.dayInfo}</span>
-                    <img src="${day.icon}" alt="Icon" class="icon">
-                </div>
-                <h2 class="card-title">${day.title}</h2>
-                <ul class="activities">
-                    ${activitiesHtml}
-                </ul>
-                <a href="${day.location.url}" target="_blank" class="map-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                    </svg>
-                    Ver en Mapa
-                </a>
-            </div>
+            <div class="page-number">Portada</div>
         </div>
     `;
 
-    // Activate modal
-    setTimeout(() => modal.classList.add('active'), 10);
-    document.body.classList.add('modal-open');
+    // -- Day Pages --
+    itinerary.forEach((day, index) => {
+        const activitiesHTML = day.activities.map(act =>
+            `<li><strong>${act.time}</strong>: ${act.desc}</li>`
+        ).join('');
 
-    // Close on click outside
-    modal.onclick = (e) => {
-        if (e.target === modal) closeModal();
-    };
-}
+        pagesHTML += `
+            <div class="page">
+                <div class="page-content">
+                    <div class="day-header">
+                        <span class="date-badge">${day.dayInfo}</span>
+                        <h3 class="day-title">${day.title}</h3>
+                    </div>
+                    
+                    <img src="${day.icon}" class="day-icon" alt="Icono">
+                    
+                    <div class="location-image-container">
+                        <img src="${day.locationImage}" class="location-image" alt="${day.location.name}">
+                    </div>
 
-window.closeModal = function () {
-    const modal = document.getElementById('day-modal');
-    if (modal) {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
-        // Wait for animation to finish before removing/clearing
-        setTimeout(() => {
-            // Optional: modal.innerHTML = ''; 
-        }, 300);
-    }
-}
+                    <ul class="activities-list">
+                        ${activitiesHTML}
+                    </ul>
 
-document.addEventListener('DOMContentLoaded', () => {
-    createSnowflakes();
-    renderTimeline();
+                    <a href="${day.location.url}" target="_blank" class="map-btn">
+                        📍 Ver Mapa
+                    </a>
+                </div>
+                <div class="page-number">Día ${index + 1}</div>
+            </div>
+        `;
+    });
+
+    // -- Back Cover --
+    pagesHTML += `
+        <div class="page cover">
+            <div class="page-content">
+                <h1>¡Fin del<br>Viaje!</h1>
+                <img src="assets/reindeer_custom.png" alt="Reindeer" style="width: 100px; margin: 20px 0;">
+                <p style="font-size: 1.2rem; margin-top: 20px;">Esperamos que haya sido<br>inolvidable.</p>
+            </div>
+            <div class="page-number">Contraportada</div>
+        </div>
+    `;
+
+    // Inject into DOM
+    bookContainer.innerHTML = pagesHTML;
+
+    // 2. Initialize PageFlip
+    // We wait a tiny bit to ensure DOM is fully parsed
+    setTimeout(() => {
+        const pageFlip = new St.PageFlip(document.getElementById('book'), {
+            width: 350, // Base width
+            height: 600, // Base height
+            size: 'stretch',
+            minWidth: 300,
+            maxWidth: 500,
+            minHeight: 500,
+            maxHeight: 800,
+            maxShadowOpacity: 0.5,
+            showCover: true,
+            mobileScrollSupport: false // Disable scroll on mobile to avoid conflicts
+        });
+
+        // Load pages
+        pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+        // Expose to window for the "Start" button to work
+        document.getElementById('book').pageFlip = pageFlip;
+
+    }, 100);
 });

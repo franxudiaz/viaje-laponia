@@ -1,325 +1,227 @@
-@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Quicksand:wght@300;400;600&display=swap');
-
-:root {
-    --primary-color: #0f172a;
-    /* Midnight Blue */
-    --accent-color: #64ffda;
-    /* Aurora Green */
-    --text-color: #e2e8f0;
-    /* Silver/White */
-    --card-bg: rgba(255, 255, 255, 0.1);
-    --card-border: rgba(255, 255, 255, 0.2);
-    --santa-red: #ff4757;
-}
-
+/* Basic Resets */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Quicksand', sans-serif;
-    background-color: var(--primary-color);
-    background-image: url('../assets/bg.png');
+    font-family: 'Mountains of Christmas', serif;
+    /* Mantener la fuente mágica */
+    background: url('../assets/bg.png') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: var(--text-color);
     min-height: 100vh;
-    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* Evitar scroll del body, el scroll es dentro del libro si hace falta */
+}
+
+/* Book Container */
+.book-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1500px;
+}
+
+/* Page Styling */
+.page {
+    background-color: #fdfbf7;
+    /* Color papel antiguo/crema suave */
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 1px solid #e0d0b0;
+    overflow: hidden;
     position: relative;
 }
 
-body.modal-open {
-    overflow: hidden;
-}
-
-/* Overlay to darken background for readability */
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 23, 42, 0.6);
-    /* Dark blue overlay */
-    z-index: -1;
-}
-
-header {
-    text-align: center;
-    padding: 2rem 1rem;
-    animation: fadeInDown 1s ease-out;
-}
-
-h1 {
-    font-family: 'Mountains of Christmas', cursive;
-    font-size: 3rem;
-    color: var(--accent-color);
-    text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
-    margin-bottom: 0.5rem;
-}
-
-.subtitle {
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-
-main {
-    max-width: 600px;
-    /* Mobile focused max-width */
-    margin: 0 auto;
-    padding: 1rem;
-    padding-bottom: 4rem;
-}
-
-/* Interactive Timeline Cards */
-.timeline {
+.page-content {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
+    border: 2px dashed #d4c5a5;
+    /* Marco decorativo interno */
+    padding: 15px;
+    border-radius: 10px;
 }
 
-.day-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
+/* Cover Page */
+.page.cover {
+    background-color: #a63d40;
+    /* Rojo navideño */
+    color: white;
+    border: 2px solid #8a2c2f;
+}
+
+.page.cover .page-content {
+    border: 2px solid #ffca28;
+    /* Dorado */
+    justify-content: center;
+}
+
+.cover h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cover h2 {
+    font-size: 1.5rem;
+    color: #ffca28;
+}
+
+.cover .start-btn {
+    margin-top: 40px;
+    padding: 10px 20px;
+    background: #ffca28;
+    color: #a63d40;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
     cursor: pointer;
+    animation: pulse 2s infinite;
 }
 
-.day-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent-color);
+/* Day Pages */
+.day-header {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 0.5rem;
-}
-
-.date {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--accent-color);
-}
-
-.icon {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
-}
-
-.card-title {
-    font-family: 'Mountains of Christmas', cursive;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-}
-
-.activities {
-    list-style: none;
-}
-
-.activity-item {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 0.8rem;
-    font-size: 0.95rem;
-    align-items: flex-start;
-}
-
-.time {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.2rem 0.6rem;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    white-space: nowrap;
-}
-
-.desc {
-    flex: 1;
-    line-height: 1.4;
-}
-
-/* Floating Action Button for Maps */
-.map-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    background: linear-gradient(135deg, var(--accent-color), #2196f3);
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 25px;
-    font-weight: 700;
+.date-badge {
+    background: #a63d40;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    display: inline-block;
     font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.day-title {
+    color: #2c3e50;
+    font-size: 1.6rem;
+    margin: 5px 0;
+}
+
+.day-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.location-image-container {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.location-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.activities-list {
+    list-style: none;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    flex-grow: 1;
+    /* Ocupar espacio disponible */
+}
+
+.activities-list li {
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+    color: #444;
+}
+
+.activities-list li::before {
+    content: '❄️';
+    position: absolute;
+    left: 0;
+    font-size: 0.8rem;
+}
+
+.map-btn {
+    display: inline-block;
+    background: #2980b9;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s;
-    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
 }
 
 .map-btn:active {
     transform: scale(0.95);
 }
 
-/* Snowfall Animation */
-.snowflake {
-    position: fixed;
-    top: -10px;
-    z-index: 9999;
-    user-select: none;
-    cursor: default;
-    animation-name: snowflakes-fall, snowflakes-shake;
-    animation-duration: 10s, 3s;
-    animation-timing-function: linear, ease-in-out;
-    animation-iteration-count: infinite, infinite;
-    animation-play-state: running, running;
-    color: #FFF;
-    font-size: 1.5em;
-    opacity: 0.8;
-}
-
-@keyframes snowflakes-fall {
-    0% {
-        top: -10%;
-    }
-
-    100% {
-        top: 100%;
-    }
-}
-
-@keyframes snowflakes-shake {
-
-    0%,
-    100% {
-        transform: translateX(0);
-    }
-
-    50% {
-        transform: translateX(80px);
-    }
-}
-
-/* Media Queries */
-@media (min-width: 768px) {
-    body {
-        padding-top: 2rem;
-    }
-}
-
-/* Modal / Expanded Card Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(15, 23, 42, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s;
-    padding: 1rem;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.expanded-card {
-    background: var(--primary-color);
-    /* More solid background for reading */
-    background: linear-gradient(135deg, #0f172a 0%, #172a45 100%);
-    border: 2px solid var(--accent-color);
-    border-radius: 20px;
-    width: 100%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    transform: scale(0.8);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
-}
-
-.modal-overlay.active .expanded-card {
-    transform: scale(1);
-}
-
-.close-btn {
+/* Page Number */
+.page-number {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
+    bottom: 15px;
+    font-size: 0.8rem;
+    color: #888;
 }
 
-.close-btn:hover {
-    background: rgba(255, 71, 87, 0.5);
+.page:nth-child(odd) .page-number {
+    right: 20px;
 }
 
-.location-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-bottom: 2px solid var(--accent-color);
-}
-
-.expanded-content {
-    padding: 2rem;
-}
-
-.expanded-content .card-title {
-    font-size: 2rem;
-    color: var(--accent-color);
-}
-
-.expanded-content .date {
-    display: block;
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-    opacity: 0.8;
+.page:nth-child(even) .page-number {
+    left: 20px;
 }
 
 /* Animations */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
+@keyframes pulse {
+    0% {
+        transform: scale(1);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsiveness */
+/* Mobile First implies styles are for mobile, but PageFlip needs specific dimensions often. 
+   We will rely on JS to set dimensions, but CSS handles inner layout. */
+@media (max-width: 600px) {
+    .page-content {
+        padding: 10px;
+    }
+
+    .day-title {
+        font-size: 1.4rem;
+    }
+
+    .location-image-container {
+        height: 150px;
     }
 }
