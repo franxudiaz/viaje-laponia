@@ -4,13 +4,13 @@ import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, se
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBfDWirWpYcTC1j3zfz4GdF_H6jisl0V7o",
-    authDomain: "viaje-laponia.firebaseapp.com",
-    projectId: "viaje-laponia",
-    storageBucket: "viaje-laponia.firebasestorage.app",
-    messagingSenderId: "510764075530",
-    appId: "1:510764075530:web:469d215004cee7f2a2adf3",
-    measurementId: "G-W6G0CRPMPJ"
+    apiKey: "AIzaSyAOVAMF30wzIIKTEIy-RCB84WJEiNyuAco",
+    authDomain: "viaje-laponia-2.firebaseapp.com",
+    projectId: "viaje-laponia-2",
+    storageBucket: "viaje-laponia-2.firebasestorage.app",
+    messagingSenderId: "817357783502",
+    appId: "1:817357783502:web:96dd9fac1eb2dffb7eeb9f",
+    measurementId: "G-K7TDXP3YFE"
 };
 
 // Initialize Firebase
