@@ -280,3 +280,120 @@ body {
         font-size: 2.2rem;
     }
 }
+
+/* =========================================
+   Photo Gallery Framework
+   ========================================= */
+.gallery-section {
+    width: 100%;
+    margin-top: 15px;
+    border-top: 2px dashed #d4c5a5;
+    padding-top: 10px;
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.gallery-header h4 {
+    font-size: 1rem;
+    color: #a63d40;
+}
+
+.upload-btn {
+    background: #4CAF50;
+    /* Green for action */
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s;
+}
+
+.upload-btn:active {
+    transform: scale(0.95);
+}
+
+.gallery-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: thin;
+    scrollbar-color: #d4c5a5 transparent;
+}
+
+.gallery-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.gallery-container::-webkit-scrollbar-thumb {
+    background-color: #d4c5a5;
+    border-radius: 3px;
+}
+
+.gallery-item {
+    flex: 0 0 70px;
+    /* Tamaño fijo de miniatura */
+    height: 70px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* Para posicionar el botón de borrar */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 0, 0, 0.7);
+    border: none;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    cursor: pointer;
+    border-bottom-left-radius: 5px;
+    display: none;
+    /* Oculto por defecto */
+}
+
+.gallery-item:hover .delete-btn {
+    display: block;
+    /* Mostrar al pasar el ratón */
+}
+
+/* En móvil siempre visible pero sutil */
+@media (hover: none) {
+    .delete-btn {
+        display: block;
+        padding: 5px;
+        /* Más área de click */
+    }
+}
+
+.gallery-placeholder {
+    font-size: 0.8rem;
+    color: #999;
+    font-style: italic;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
