@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pageFlip = new St.PageFlip(container, {
             width: isMobile ? window.innerWidth : 550,
-            height: isMobile ? window.innerHeight : 750,
+            height: isMobile ? (window.innerHeight - 40) : 750,
             size: isMobile ? 'stretch' : 'fixed',
             // Mobile adjustments
             minWidth: 300,
