@@ -204,13 +204,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnLabel.style.cursor = 'wait';
                 if (textNode) textNode.textContent = " ⏳ Subiendo...";
 
+                // Create a timeout promise to prevent hanging
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error("La subida está tardando demasiado. Verifica tu conexión.")), 20000);
+                });
+
                 try {
-                    await window.fbServices.uploadPhoto(file, dayId);
+                    if (!navigator.onLine) {
+                        throw new Error("No hay conexión a internet.");
+                    }
+
+                    // Race between upload and timeout
+                    await Promise.race([
+                        window.fbServices.uploadPhoto(file, dayId),
+                        timeoutPromise
+                    ]);
+
                     alert("¡Foto subida con éxito!");
                     input.value = '';
                 } catch (err) {
-                    console.error(err);
-                    alert("Error al subir la foto: " + err.message);
+                    console.error("Upload error:", err);
+                    alert("Error: " + err.message);
                 } finally {
                     // Restore state reliably
                     btnLabel.style.opacity = '1';
