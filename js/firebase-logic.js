@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBfDWirWpYcTC1j3zfz4GdF_H6jisl0V7o",
@@ -16,39 +17,66 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 console.log("Firebase initialized");
+
+// Ensure Auth
+signInAnonymously(auth)
+    .then(() => {
+        console.log("Signed in anonymously");
+    })
+    .catch((error) => {
+        console.error("Error signing in anonymously:", error);
+    });
 
 // Expose functions to window for app.js to use
 window.fbServices = {
     /**
-     * Upload a file for a specific day
+     * Upload a file for a specific day with progress monitoring
      * @param {File} file - The file object
      * @param {number} dayId - The ID of the day
+     * @param {Function} onProgress - Callback for progress updates (0-100)
      * @returns {Promise<string>} - The download URL
      */
-    uploadPhoto: async (file, dayId) => {
-        try {
+    uploadPhoto: (file, dayId, onProgress) => {
+        return new Promise((resolve, reject) => {
             const fileName = `${Date.now()}_${file.name}`;
             const storageRef = ref(storage, `photos/day_${dayId}/${fileName}`);
 
-            console.log("Uploading...", fileName);
-            const snapshot = await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(snapshot.ref);
+            console.log("Starting upload...", fileName);
+            const uploadTask = uploadBytesResumable(storageRef, file);
 
-            // Save reference to Firestore
-            await addDoc(collection(db, "photos"), {
-                dayId: dayId,
-                url: downloadURL,
-                timestamp: serverTimestamp(),
-                fileName: fileName
-            });
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    if (onProgress) onProgress(Math.round(progress));
+                },
+                (error) => {
+                    console.error("Upload failure:", error);
+                    reject(error);
+                },
+                async () => {
+                    try {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-            return downloadURL;
-        } catch (error) {
-            console.error("Error uploading photo:", error);
-            throw error;
-        }
+                        // Save reference to Firestore
+                        await addDoc(collection(db, "photos"), {
+                            dayId: dayId,
+                            url: downloadURL,
+                            timestamp: serverTimestamp(),
+                            fileName: fileName
+                        });
+
+                        resolve(downloadURL);
+                    } catch (dbError) {
+                        console.error("Firestore save error:", dbError);
+                        reject(dbError);
+                    }
+                }
+            );
+        });
     },
 
     /**
