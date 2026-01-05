@@ -320,12 +320,17 @@ body {
     margin-top: 15px;
     border-top: 2px dashed #d4c5a5;
     padding-top: 10px;
+    padding-bottom: 20px;
+    /* Safe zone for page flip */
 }
 
 .gallery-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    /* Stack to center */
+    justify-content: center;
     align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
