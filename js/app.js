@@ -1,4 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- LOCK SCREEN LOGIC ---
+    const lockScreen = document.getElementById('lock-screen');
+    const passwordInput = document.getElementById('password-input');
+    const unlockBtn = document.getElementById('unlock-btn');
+    const errorMsg = document.getElementById('error-msg');
+    const MAGIC_WORD = "africa";
+
+    // Check if already unlocked
+    if (localStorage.getItem('unlocked') === 'true') {
+        lockScreen.style.display = 'none';
+    } else {
+        // Stop scroll on body when locked
+        document.body.style.overflow = 'hidden';
+    }
+
+    const checkPassword = () => {
+        const input = passwordInput.value.trim().toLowerCase();
+        if (input === MAGIC_WORD) {
+            localStorage.setItem('unlocked', 'true');
+            lockScreen.style.opacity = '0';
+            setTimeout(() => {
+                lockScreen.style.display = 'none';
+                document.body.style.overflow = ''; // Restore scroll
+            }, 500);
+        } else {
+            errorMsg.style.display = 'block';
+            passwordInput.style.borderColor = 'red';
+            passwordInput.classList.add('shake');
+            setTimeout(() => passwordInput.classList.remove('shake'), 500);
+        }
+    };
+
+    unlockBtn.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') checkPassword();
+    });
+
     const bookContainer = document.getElementById('book');
 
     // 1. Generate Pages HTML
