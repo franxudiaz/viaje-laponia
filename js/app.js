@@ -241,4 +241,36 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         window.addEventListener('firebase-ready', initGallery);
     }
+
+    // --- DEBUG CONSOLE (Temporary for Mobile) ---
+    // Creates a small overlay to read logs on mobile
+    const debugDiv = document.createElement('div');
+    debugDiv.style.position = 'fixed';
+    debugDiv.style.bottom = '0';
+    debugDiv.style.left = '0';
+    debugDiv.style.width = '100%';
+    debugDiv.style.height = '100px';
+    debugDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
+    debugDiv.style.color = '#00ff00';
+    debugDiv.style.fontSize = '10px';
+    debugDiv.style.overflowY = 'scroll';
+    debugDiv.style.zIndex = '9999';
+    debugDiv.style.pointerEvents = 'none'; // Click through
+    debugDiv.style.fontFamily = 'monospace';
+    debugDiv.innerHTML = '<div>Debug Started...</div>';
+    document.body.appendChild(debugDiv);
+
+    const originalLog = console.log;
+    const originalError = console.error;
+
+    console.log = (...args) => {
+        originalLog.apply(console, args);
+        debugDiv.innerHTML = `<div>LOG: ${args.join(' ')}</div>` + debugDiv.innerHTML;
+    };
+
+    console.error = (...args) => {
+        originalError.apply(console, args);
+        debugDiv.innerHTML = `<div style="color:red">ERR: ${args.join(' ')}</div>` + debugDiv.innerHTML;
+    };
+
 });
