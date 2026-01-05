@@ -85,12 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // We wait a tiny bit to ensure DOM is fully parsed
     setTimeout(() => {
         const isMobile = window.innerWidth < 768;
+        const container = document.getElementById('book');
 
-        const pageFlip = new St.PageFlip(document.getElementById('book'), {
-            width: isMobile ? 400 : 500, // VUELTA A VALORES ORIGINALES
-            height: isMobile ? 600 : 700,
+        const pageFlip = new St.PageFlip(container, {
+            width: isMobile ? window.innerWidth : 550,
+            height: isMobile ? window.innerHeight : 750,
             size: isMobile ? 'stretch' : 'fixed',
-            // Configuración clave para móvil:
+            // Mobile adjustments
             minWidth: 300,
             maxWidth: 1000,
             minHeight: 400,
@@ -98,7 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
             maxShadowOpacity: 0.5,
             showCover: true,
             mobileScrollSupport: false,
-            clickEvent: false, // DESACTIVAR cambio de página con click
+
+            // CRITICAL FIXES:
+            clickEvent: false, // Turn off click-to-flip universally (user hates accidental flips)
+            useMouseEvents: !isMobile, // Only use mouse events on desktop
             usePortrait: true,
             startPage: 0
         });
@@ -107,9 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
         pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
         // Expose to window
-        document.getElementById('book').pageFlip = pageFlip;
+        container.pageFlip = pageFlip;
 
-    }, 100);
+    }, 200);
 
     // 3. Initialize Firebase Integration
     const initGallery = () => {
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Subscribe to photos
             window.fbServices.subscribeToPhotos(day.id, (photos) => {
-                if (photos.length === 0) {
+                if (!photos || photos.length === 0) {
                     container.innerHTML = '<div class="gallery-placeholder">No hay fotos aún...</div>';
                     return;
                 }
@@ -140,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Global delete function
         window.deletePhoto = async (docId, filePath) => {
+            // Confirm dialog stops propagation naturally usually, but we are inside an onclick.
+            // The event stopping logic below regarding gallery containers helps here.
             if (confirm("¿Seguro que quieres borrar esta foto?")) {
                 try {
                     await window.fbServices.deletePhoto(docId, filePath);
@@ -149,18 +155,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Set up Upload Buttons
-        document.querySelectorAll('.upload-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Stop page flip
+        // --- ROBUST EVENT HANDLING ---
+        const stopAllEvents = (element) => {
+            ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'].forEach(evt => {
+                element.addEventListener(evt, (e) => e.stopPropagation(), { passive: false });
+            });
+        };
+
+        // Apply to Upload Buttons and Inputs to prevent PageFlip stealing focus/clicks
+        document.querySelectorAll('.upload-btn, .photo-upload-input').forEach(el => {
+            stopAllEvents(el);
+        });
+
+        // Apply prevention to gallery containers (allow scroll, stop propagation)
+        document.querySelectorAll('.gallery-container').forEach(container => {
+            // We only stop propagation of touch/click to prevent page flip. 
+            // We do NOT stop default behavior entirely otherwise scrolling won't work?
+            // Actually, stopPropagation() is enough to stop PageFlip.
+            ['touchstart', 'touchmove', 'touchend', 'mousedown', 'mousemove', 'mouseup'].forEach(evt => {
+                container.addEventListener(evt, (e) => e.stopPropagation(), { passive: true });
             });
         });
 
+        // --- UPLOAD PROCESS ---
         document.querySelectorAll('.photo-upload-input').forEach(input => {
-            input.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
             input.addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -168,37 +186,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dayId = parseInt(e.target.dataset.dayId);
                 const btnLabel = e.target.parentElement;
 
-                // Visual feedback using a temporary span, preserving existing children (input)
+                // Safe UI Update: Don't destroy the input by replacing innerHTML.
+                // Find the text node "➕ Subir Foto"
+                let textNode = null;
+                for (let i = 0; i < btnLabel.childNodes.length; i++) {
+                    const node = btnLabel.childNodes[i];
+                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                        textNode = node;
+                        break;
+                    }
+                }
+
+                const originalText = textNode ? textNode.textContent : "➕ Subir Foto";
+
+                // Visual feedback
                 btnLabel.style.opacity = '0.6';
                 btnLabel.style.cursor = 'wait';
-
-                // Create status indicator
-                const statusSpan = document.createElement('span');
-                statusSpan.className = 'upload-status-text';
-                statusSpan.textContent = ' ⏳ Subiendo...';
-                statusSpan.style.marginLeft = '5px';
-                statusSpan.style.fontSize = '0.8rem';
-                statusSpan.style.backgroundColor = 'white';
-                statusSpan.style.color = 'black';
-                statusSpan.style.padding = '2px 5px';
-                statusSpan.style.borderRadius = '5px';
-
-                btnLabel.appendChild(statusSpan);
+                if (textNode) textNode.textContent = " ⏳ Subiendo...";
 
                 try {
                     await window.fbServices.uploadPhoto(file, dayId);
-                    // Success feedback
                     alert("¡Foto subida con éxito!");
-                    input.value = ''; // Reset file input
+                    input.value = '';
                 } catch (err) {
+                    console.error(err);
                     alert("Error al subir la foto: " + err.message);
                 } finally {
-                    // Restore state
+                    // Restore state reliably
                     btnLabel.style.opacity = '1';
                     btnLabel.style.cursor = 'pointer';
-                    if (statusSpan.parentNode) {
-                        statusSpan.parentNode.removeChild(statusSpan);
-                    }
+                    if (textNode) textNode.textContent = originalText;
                 }
             });
         });

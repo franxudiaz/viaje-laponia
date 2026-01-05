@@ -229,11 +229,24 @@ body {
     .book-container {
         /* En móvil, ajustamos la perspectiva para que se vea plano y grande */
         perspective: none;
-        padding: 10px;
+        padding: 5px;
+        /* Reduce padding to maximize space */
+        height: 100vh;
+        /* Ensure full height */
+        width: 100vw;
+        /* Ensure full width */
+        overflow: hidden;
+        /* Prevent body scroll */
+    }
+
+    /* Ensure the book element takes available space */
+    #book {
+        width: 100% !important;
+        height: 100% !important;
     }
 
     .page {
-        padding: 10px;
+        padding: 5px;
         /* Menos borde blanco */
         border: 1px solid #ccc;
     }
@@ -242,48 +255,60 @@ body {
         padding: 5px;
         /* Menos padding interno para tener más sitio */
         border: 1px dashed #d4c5a5;
+        overflow-y: auto;
+        /* Allow scrolling if content is too long */
+        justify-content: flex-start;
+        /* Align top so scrolling starts at top */
     }
 
     .day-title {
-        font-size: 1.5rem;
-        /* Un poco más grande */
+        font-size: 1.3rem;
+        /* Adjusted for better fit */
+        margin: 5px 0;
     }
 
     .day-icon {
-        width: 60px;
-        /* Recuperar tamaño original */
-        height: 60px;
+        width: 50px;
+        height: 50px;
         margin-bottom: 5px;
     }
 
     .location-image-container {
-        height: 150px;
+        height: 140px;
         margin: 5px 0;
     }
 
     .activities-list {
-        font-size: 1rem;
-        /* Texto legible */
+        font-size: 0.9rem;
+        /* Texto legible pero compacto */
     }
 
     .activities-list li {
-        margin-bottom: 8px;
-        /* Más espaciado */
+        margin-bottom: 5px;
+        /* Menos espaciado */
     }
 
     .map-btn {
-        padding: 12px 25px;
-        font-size: 1.1rem;
-        margin-top: 10px;
+        padding: 8px 15px;
+        font-size: 1rem;
+        margin-top: 5px;
         width: 100%;
-        /* Botón ancho fácil de pulsar */
         text-align: center;
+    }
+
+    .gallery-section {
+        margin-top: 10px;
+        padding-top: 5px;
     }
 
     /* Cover adjustments */
     .cover h1 {
-        font-size: 2.8rem;
+        font-size: 2.2rem;
         /* Título portada grande */
+    }
+
+    .cover h2 {
+        font-size: 1.2rem;
     }
 }
 
