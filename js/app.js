@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Create a timeout promise to prevent hanging
                 const timeoutPromise = new Promise((_, reject) => {
-                    setTimeout(() => reject(new Error("La subida está tardando demasiado. Verifica tu conexión.")), 20000);
+                    setTimeout(() => reject(new Error("La subida está tardando demasiado. Verifica tu conexión.")), 60000);
                 });
 
                 try {
