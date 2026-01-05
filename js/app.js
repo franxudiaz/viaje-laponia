@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.innerWidth < 768;
 
         const pageFlip = new St.PageFlip(document.getElementById('book'), {
-            width: isMobile ? 380 : 500, // Ajustado para móvil
-            height: isMobile ? 640 : 700, // Más alto en móvil
+            width: isMobile ? 360 : 500, // Ratio 9:16 aprox para llenar mejor móvil
+            height: isMobile ? 640 : 700,
             size: isMobile ? 'stretch' : 'fixed',
             // Configuración clave para móvil:
             minWidth: 300,
@@ -97,8 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
             maxHeight: 1400,
             maxShadowOpacity: 0.5,
             showCover: true,
-            mobileScrollSupport: false,
-            usePortrait: true, // Permitir modo retrato (una sola página)
+            mobileScrollSupport: true, // Permitir scroll nativo si hace falta? No, mejor false para swipe puro
+            clickEvent: false, // DESACTIVAR cambio de página con click
+            usePortrait: true,
             startPage: 0
         });
 
