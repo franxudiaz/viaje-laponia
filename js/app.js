@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // CRITICAL FIXES:
             clickEvent: false, // Turn off click-to-flip universally (user hates accidental flips)
-            useMouseEvents: !isMobile, // Only use mouse events on desktop
+            useMouseEvents: true, // MUST be true for swipe/drag to work on mobile
             usePortrait: true,
             startPage: 0
         });
