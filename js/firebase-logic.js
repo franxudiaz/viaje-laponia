@@ -4,7 +4,7 @@ import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, se
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAOVAMF30wzIIKTEIy-RCB84WJEiNyuAco",
+    apiKey: "AIzaSyAOVAMF30wzIIKTEIy-RCB84WjEiNyuAco",
     authDomain: "viaje-laponia-2.firebaseapp.com",
     projectId: "viaje-laponia-2",
     storageBucket: "viaje-laponia-2.firebasestorage.app",
