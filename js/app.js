@@ -49,8 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="gallery-section">
                         <div class="gallery-header">
                             <h4>📸 Recuerdos del día</h4>
-                            <label class="upload-btn">
-                                <input type="file" accept="image/*" class="photo-upload-input" data-day-id="${day.id}" style="display: none;">
+                            <!-- STOP PROPAGATION ON EVERYTHING -->
+                            <label class="upload-btn" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()">
+                                <input type="file" accept="image/*" class="photo-upload-input" data-day-id="${day.id}" style="display: none;" onclick="event.stopPropagation()">
                                 ➕ Subir Foto
                             </label>
                         </div>
@@ -135,8 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render photos with delete button
                 container.innerHTML = photos.map(photo =>
                     `<div class="gallery-item">
-                        <img src="${photo.url}" loading="lazy" alt="Foto del viaje" onclick="window.openLightbox('${photo.url}')">
-                        <button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.filePath}')">🗑️</button>
+                        <img src="${photo.url}" loading="lazy" alt="Foto del viaje" 
+                             onclick="event.stopPropagation(); window.openLightbox('${photo.url}')" 
+                             onmousedown="event.stopPropagation()" 
+                             ontouchstart="event.stopPropagation()">
+                        <button class="delete-btn" 
+                                onclick="event.stopPropagation(); deletePhoto('${photo.id}', '${photo.filePath}')"
+                                onmousedown="event.stopPropagation()" 
+                                ontouchstart="event.stopPropagation()">🗑️</button>
                      </div>`
                 ).join('');
             });
