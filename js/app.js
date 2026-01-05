@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.innerWidth < 768;
 
         const pageFlip = new St.PageFlip(document.getElementById('book'), {
-            width: isMobile ? 400 : 500, // En móvil, usamos un ancho base que llene más
-            height: isMobile ? 600 : 700,
-            size: isMobile ? 'stretch' : 'fixed', // Stretch en móvil para llenar pantalla
+            width: isMobile ? 380 : 500, // Ajustado para móvil
+            height: isMobile ? 640 : 700, // Más alto en móvil
+            size: isMobile ? 'stretch' : 'fixed',
             // Configuración clave para móvil:
             minWidth: 300,
             maxWidth: 1000,
             minHeight: 400,
-            maxHeight: 1200,
+            maxHeight: 1400,
             maxShadowOpacity: 0.5,
             showCover: true,
             mobileScrollSupport: false,

@@ -239,45 +239,51 @@ body {
     }
 
     .page-content {
-        padding: 10px;
+        padding: 5px;
+        /* Menos padding interno para tener más sitio */
         border: 1px dashed #d4c5a5;
     }
 
     .day-title {
-        font-size: 1.3rem;
-        /* Ajustar título */
+        font-size: 1.5rem;
+        /* Un poco más grande */
     }
 
     .day-icon {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        /* Recuperar tamaño original */
+        height: 60px;
         margin-bottom: 5px;
     }
 
     .location-image-container {
-        height: 140px;
-        /* Imagen un poco más baja para que quepa todo */
+        height: 150px;
         margin: 5px 0;
     }
 
     .activities-list {
-        font-size: 0.85rem;
-        /* Texto un pelín más pequeño */
+        font-size: 1rem;
+        /* Texto legible */
     }
 
     .activities-list li {
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        /* Más espaciado */
     }
 
     .map-btn {
-        padding: 10px 20px;
-        font-size: 1rem;
+        padding: 12px 25px;
+        font-size: 1.1rem;
         margin-top: 10px;
+        width: 100%;
+        /* Botón ancho fácil de pulsar */
+        text-align: center;
     }
 
     /* Cover adjustments */
     .cover h1 {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
+        /* Título portada grande */
     }
 }
 
