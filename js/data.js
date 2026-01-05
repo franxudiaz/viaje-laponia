@@ -83,21 +83,6 @@ const itinerary = [
     id: 6,
     date: '2026-01-12',
     dayInfo: 'Lunes 12 Enero',
-    title: 'Compras y Recuerdos',
-    icon: 'assets/santa_custom.png',
-    activities: [
-      { time: 'Todo el día', desc: 'Santa Claus Village (Tiendas de souvenirs y últimos adioses)' }
-    ],
-    location: {
-      name: 'Santa Claus Village',
-      url: 'https://www.google.com/maps/search/?api=1&query=Santa+Claus+Village+Rovaniemi'
-    },
-    locationImage: 'assets/photo_santa_village.png' // Reuse beautiful village photo
-  },
-  {
-    id: 7,
-    date: '2026-01-13',
-    dayInfo: 'Martes 13 Enero',
     title: 'Vuelta a Casa',
     icon: 'assets/reindeer_custom.png',
     activities: [
