@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render photos with delete button
                 container.innerHTML = photos.map(photo =>
                     `<div class="gallery-item">
-                        <img src="${photo.url}" loading="lazy" alt="Foto del viaje" onclick="window.open('${photo.url}', '_blank')">
+                        <img src="${photo.url}" loading="lazy" alt="Foto del viaje" onclick="window.openLightbox('${photo.url}')">
                         <button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.filePath}')">🗑️</button>
                      </div>`
                 ).join('');
@@ -242,35 +242,36 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('firebase-ready', initGallery);
     }
 
-    // --- DEBUG CONSOLE (Temporary for Mobile) ---
-    // Creates a small overlay to read logs on mobile
-    const debugDiv = document.createElement('div');
-    debugDiv.style.position = 'fixed';
-    debugDiv.style.bottom = '0';
-    debugDiv.style.left = '0';
-    debugDiv.style.width = '100%';
-    debugDiv.style.height = '100px';
-    debugDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
-    debugDiv.style.color = '#00ff00';
-    debugDiv.style.fontSize = '10px';
-    debugDiv.style.overflowY = 'scroll';
-    debugDiv.style.zIndex = '9999';
-    debugDiv.style.pointerEvents = 'none'; // Click through
-    debugDiv.style.fontFamily = 'monospace';
-    debugDiv.innerHTML = '<div>Debug Started...</div>';
-    document.body.appendChild(debugDiv);
+    // --- LIGHTBOX LOGIC ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.close-lightbox');
 
-    const originalLog = console.log;
-    const originalError = console.error;
-
-    console.log = (...args) => {
-        originalLog.apply(console, args);
-        debugDiv.innerHTML = `<div>LOG: ${args.join(' ')}</div>` + debugDiv.innerHTML;
+    window.openLightbox = (url) => {
+        if (!lightbox || !lightboxImg) return;
+        lightboxImg.src = url;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
     };
 
-    console.error = (...args) => {
-        originalError.apply(console, args);
-        debugDiv.innerHTML = `<div style="color:red">ERR: ${args.join(' ')}</div>` + debugDiv.innerHTML;
+    window.closeLightbox = () => {
+        if (!lightbox) return;
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        lightboxImg.src = '';
     };
+
+    // Close on background click
+    if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                window.closeLightbox();
+            }
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', window.closeLightbox);
+    }
 
 });
