@@ -50,7 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="gallery-header">
                             <h4>📸 Recuerdos del día</h4>
                             <!-- STOP PROPAGATION ON EVERYTHING -->
-                            <label class="upload-btn" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()">
+                            <!-- STOP PROPAGATION ON EVERYTHING -->
+                            <label class="upload-btn" 
+                                   onclick="event.stopPropagation()" 
+                                   onmousedown="event.stopPropagation()" 
+                                   ontouchstart="event.stopPropagation()"
+                                   ontouchend="event.stopPropagation()"
+                                   onpointerdown="event.stopPropagation()"
+                                   onpointerup="event.stopPropagation()">
                                 <input type="file" accept="image/*" class="photo-upload-input" data-day-id="${day.id}" style="display: none;" onclick="event.stopPropagation()">
                                 ➕ Subir Foto
                             </label>
@@ -139,11 +146,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${photo.url}" loading="lazy" alt="Foto del viaje" 
                              onclick="event.stopPropagation(); window.openLightbox('${photo.url}')" 
                              onmousedown="event.stopPropagation()" 
-                             ontouchstart="event.stopPropagation()">
+                             ontouchstart="event.stopPropagation()"
+                             ontouchend="event.stopPropagation()"
+                             onpointerdown="event.stopPropagation()"
+                             onpointerup="event.stopPropagation()">
                         <button class="delete-btn" 
                                 onclick="event.stopPropagation(); deletePhoto('${photo.id}', '${photo.filePath}')"
                                 onmousedown="event.stopPropagation()" 
-                                ontouchstart="event.stopPropagation()">🗑️</button>
+                                ontouchstart="event.stopPropagation()"
+                                ontouchend="event.stopPropagation()"
+                                onpointerdown="event.stopPropagation()"
+                                onpointerup="event.stopPropagation()">🗑️</button>
                      </div>`
                 ).join('');
             });
